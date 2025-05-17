@@ -1,0 +1,63 @@
+---
+title: "Exploratory"
+output: pdf_document
+date: "2025-05-15"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+
+```{r}
+summary(seriesData)
+```
+```{r}
+head(seriesData)
+```
+
+
+
+```{r}
+summary(allData)
+```
+```{r}
+head(allData)
+```
+
+# Finding the Oldest and Youngest Games
+```{r}
+
+paste("The Oldest Video Game in the data was made in ",min(allData$Release.Date, na.rm = TRUE))
+
+paste("The Youngest Video Game in the data was made in ",max(allData$Release.Date, na.rm = TRUE))
+
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
