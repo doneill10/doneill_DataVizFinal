@@ -1,36 +1,16 @@
 library(shiny)
 library(dplyr)
-
-### Loaded Data
-### ==========================
-
-allData <- read.csv('C:/Users/donei/Desktop/Data_Viz/doneill_DataVizFinal/Data/video game sales all platforms.csv', na.strings = "")
-seriesData <- read.csv('C:/Users/donei/Desktop/Data_Viz/doneill_DataVizFinal/Data/video game sales series.csv', na.strings = "")
-
-### Variables/Functions
-
-icky <- c("Last.Update", "NA.Sales", "PAL.Sales", "Japan.Sales", "Other.Sales", "VGChartz.Score", "Rank")
-
-### Cleaning Data
-### ==========================
-
-# Removing unnecessary columns
-allData <- allData %>% select(-any_of(icky))
-seriesData <- seriesData %>% select(-any_of(icky))
-
-# Lowercasing Chr columns
-allData <- allData %>% mutate(across(where(is.character), tolower))
-seriesData <- seriesData %>% mutate(across(where(is.character), tolower))
-
-
-
-
-
+library(shinyjs)
 
 fluidPage(
-  
+
+#Activates shiny JS
+  useShinyjs(),
+
+#Tag head
   tags$head(
     tags$style(HTML("
+    
       html, body {
         margin: 0;
         padding: 0;
@@ -38,7 +18,7 @@ fluidPage(
 
       .header-img {
         width: 150%;
-        max-height: 150px;  /* adjust as needed */
+        max-height: 150px;
         object-fit: fill;
         display: block;
         margin: -20px;
@@ -47,33 +27,57 @@ fluidPage(
 
       .main-content {
         padding: 20px;
+        margin-left: 120px; /* make room for side tabs */
       }
+
+      /* Side Tab Container */
+      .side-tabs {
+        position: fixed;
+        top: 200px;
+        left: 0;
+        display: flex;
+        flex-direction: column;
+        z-index: 1000;
+      }
+
+      .tab-button {
+      background-color: white;
+      color: #444;
+      padding: 10px 15px;
+      margin: 2px 0;
+      cursor: pointer;
+      border: none;
+      font-weight: bold;
+      text-align: left;
+      width: 100px;
+    }
+
+      .tab-button:hover {
+        background-color: #666;
+      }
+
     "))
   ),
-  
-  # Image Header
+
+#Tag Img
   tags$img(
     class = "header-img",
     src = "https://steamcdn-a.akamaihd.net/steamcommunity/public/images/steamworks_docs/english/Header_1.jpg"
   ),
   
-  # Main App UI
+  # Side Tab Buttons
+  tags$div(
+    class = "side-tabs",
+    actionButton("show_tab1", "Tab 1", class = "tab-button"),
+    actionButton("show_tab2", "Tab 2", class = "tab-button")
+  ),
+  
+  # Main UI Content
   tags$div(
     class = "main-content",
-    titlePanel("Video Game Sales from 1979 to 2008"),
-    sidebarLayout(
-      sidebarPanel(
-        sliderInput("bins", "Number of bins:", min = 1, max = 50, value = 30)
-      ),
-      mainPanel()
-    )
+    uiOutput("tabContent")
   )
 )
-
-
-
-
-
 
 
 
